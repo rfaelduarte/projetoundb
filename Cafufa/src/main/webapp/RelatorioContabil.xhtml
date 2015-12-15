@@ -1,0 +1,106 @@
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="menu">
+		<h:form>
+        MENU
+         <p:menu>
+				<p:menuitem value="Home" outcome="Home" />
+				<p:menuitem value="Relatório Contábil" outcome="RelatorioContabil" />
+				<p:menuitem value="Relatório de Venda" outcome="RelatorioDeVendas" />
+				<p:menuitem value="Relatório de Prospecção"
+					outcome="RelatorioDeProspeccao" />
+				<p:menuitem value="Sair" url="/j_spring_security_logout" />
+			</p:menu>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="corpo">
+		<h2>Relatório Contábil</h2>
+		<br />
+		<h:form id="frm">
+			<p:growl id="msgs" showDetail="true" />
+			<p:panelGrid columns="2" columnClasses="ui-grid-col-3, ui-grid-col-9">
+				<p:outputLabel value="Loja" for="lojaAutoComplete" />
+				<p:autoComplete id="lojaAutoComplete"
+					value="#{demonstrativoFinanceiroBean.lojaSelecionada}"
+					completeMethod="#{demonstrativoFinanceiroBean.completeLoja}"
+					var="loja" itemLabel="#{loja.nome}" itemValue="#{loja}"
+					converter="lojaConverter" />
+				<p:outputLabel value="Evento" for="eventoAutoComplete" />
+				<p:autoComplete id="eventoAutoComplete"
+					value="#{demonstrativoFinanceiroBean.eventoSelecionado}"
+					completeMethod="#{demonstrativoFinanceiroBean.completeEvento}"
+					var="evento" itemLabel="#{evento.nome}" itemValue="#{evento}"
+					converter="eventoConverter" />
+				<p:outputLabel value="Período: " />
+				<h:panelGroup style="width=100%">
+					<p:calendar value="#{demonstrativoFinanceiroBean.dataInicial}"
+						pattern="dd/Mm/yyyy" converter="dataConverter" required="true" />
+					<p:outputLabel value=" a " />
+					<p:calendar value="#{demonstrativoFinanceiroBean.dataFinal}"
+						pattern="dd/Mm/yyyy" converter="dataConverter" required="true" />
+				</h:panelGroup>
+				<h:commandButton value="Relatório Agora"
+					action="#{demonstrativoFinanceiroBean.relatorioAgora}">
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+			</p:panelGrid>
+
+			<p:separator />
+			<p:dataGrid var="loja"
+				value="#{demonstrativoFinanceiroBean.lojasPesquisadas}" columns="1"
+				rows="5" paginatorAlwaysVisible="false" paginatorPosition="top"
+				paginator="true" emptyMessage="">
+                Loja: <h:outputText value="#{loja.nome}" />
+				<br />
+
+				<p:dataGrid var="evento" value="#{loja.eventos}" columns="1"
+					rows="5" paginatorAlwaysVisible="false" paginatorPosition="top"
+					paginator="true">
+					<p:dataTable var="pagamento" value="#{evento.formaPagamentos}">
+						<f:facet name="header">
+							<h:outputText value="#{evento.nome}" />
+						</f:facet>
+						<p:column headerText="Forma de Pagamento">
+                            #{pagamento.nome}
+                        </p:column>
+						<p:column headerText="Valor">
+                            #{pagamento.valor}
+                        </p:column>
+					</p:dataTable>
+					<p:dataTable var="pagamento" value="#{loja.formaPagamentos}">
+						<f:facet name="header">
+							<h:outputText value="Resumo da Loja: #{loja.nome}" />
+						</f:facet>
+						<p:column headerText="Forma de Pagamento">
+							<h:outputText value="#{pagamento.nome}" />
+						</p:column>
+						<p:column headerText="Valor">
+							<h:outputText value="#{pagamento.valor}" />
+						</p:column>
+					</p:dataTable>
+				</p:dataGrid>
+
+			</p:dataGrid>
+			<p:dataTable var="pagamentoGeral"
+				value="#{demonstrativoFinanceiroBean.resumoFinanceiro}"
+				emptyMessage="">
+				<f:facet name="header">
+					<h:outputText value="Resumo Financeiro Geral" />
+				</f:facet>
+				<p:column headerText="Forma de Pagamento">
+					<h:outputText value="#{pagamentoGeral.nome}" />
+				</p:column>
+				<p:column headerText="Valor">
+					<h:outputText value="#{pagamentoGeral.valor}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

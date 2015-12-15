@@ -1,0 +1,29 @@
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:define name="menu">
+		<h:form>
+        MENU
+         <p:menu>
+				<p:menuitem value="Home" outcome = "Home" />
+				<p:menuitem value="Relatório Contábil" outcome="RelatorioContabil"/>
+				<p:menuitem value="Relatório de Venda" outcome="RelatorioDeVendas"/>
+				<p:menuitem value="Relatório de Prospecção" outcome="RelatorioDeProspeccao"/>
+				<p:menuitem value="Sair" url="/j_spring_security_logout" />
+			</p:menu>
+		</h:form>
+	</ui:define>
+	
+	<ui:define name="corpo">
+		<br />
+		<br />
+		<br />
+		<br />
+		BEM-VINDO!
+	</ui:define>
+	
+</ui:composition>

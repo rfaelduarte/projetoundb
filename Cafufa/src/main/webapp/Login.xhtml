@@ -1,0 +1,52 @@
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+	<ui:define name="corpo">
+
+		<br />
+		<br />
+		<br />
+
+		<div class="ui-grid ui-grid-responsive">
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-2"></div>
+
+				<div class="ui-grid-col-8 conteudo">
+
+					<p:panelGrid columns="2">
+						<f:facet name="header">
+			Login
+			</f:facet>
+						<h:outputLabel for="email" value="email:" />
+						<p:inputText id="email" value="#{bean.email}"
+							label="Digite seu email!" />
+
+						<h:outputLabel for="senha" value="senha:" />
+						<p:inputText id="senha" value="#{bean.senha}"
+							label="Digite sua senha!" />
+
+						<f:facet name="footer">
+							<p:commandButton type="buttom" value="Salvar"
+								icon="ui-icon-check" />
+
+						</f:facet>
+
+					</p:panelGrid>
+				</div>
+
+				<div class="ui-grid-col-2 conteudo"></div>
+			</div>
+		</div>
+		<br />
+		<br />
+		<br />
+
+	</ui:define>
+		
+</ui:composition>

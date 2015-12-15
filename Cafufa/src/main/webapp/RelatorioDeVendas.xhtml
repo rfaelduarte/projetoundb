@@ -1,0 +1,113 @@
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="menu">
+		<h:form>
+        MENU
+        <p:menu>
+				<p:menuitem value="Home" outcome = "Home" />
+				<p:menuitem value="Relatório Contábil" outcome="RelatorioContabil"/>
+				<p:menuitem value="Relatório de Venda" outcome="RelatorioDeVendas"/>
+				<p:menuitem value="Relatório de Prospecção" outcome="RelatorioDeProspeccao"/>
+				<p:menuitem value="Sair" url="/j_spring_security_logout"/>
+			</p:menu>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="corpo">
+		<h2 > Relatório de Vendas</h2>
+		<br />
+		<h:form id="frm">
+			<p:growl id="msgs" showDetail="true" />
+			<p:panelGrid columns="2" columnClasses="ui-grid-col-3, ui-grid-col-9">
+				<p:outputLabel value="
+				Loja" for="lojaAutoComplete" />
+				<p:autoComplete id="lojaAutoComplete"
+					value="#{relatorioDeVendasBean.lojaSelecionada}"
+					completeMethod="#{relatorioDeVendasBean.completeLoja}" var="loja"
+					itemLabel="#{loja.nome}" itemValue="#{loja}"
+					converter="lojaConverter" />
+				<p:outputLabel value="Evento" for="eventoAutoComplete" />
+				<p:autoComplete id="eventoAutoComplete"
+					value="#{relatorioDeVendasBean.eventoSelecionado}"
+					completeMethod="#{relatorioDeVendasBean.completeEvento}"
+					var="evento" itemLabel="#{evento.nome}" itemValue="#{evento}"
+					converter="eventoConverter" />
+				<p:outputLabel value="Período: " />
+				<h:panelGroup style="width=100%">
+					<p:calendar value="#{relatorioDeVendasBean.dataInicial}"
+						pattern="dd/Mm/yyyy" converter="dataConverter" required="true" />
+					<p:outputLabel value=" a " />
+					<p:calendar value="#{relatorioDeVendasBean.dataFinal}"
+						pattern="dd/Mm/yyyy" converter="dataConverter" required="true" />
+				</h:panelGroup>
+				<h:commandButton value="Relatório Agora"
+					action="#{relatorioDeVendasBean.relatorioAgora}">
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+			</p:panelGrid>
+
+			<br />
+			<p:dataGrid var="evento"
+				value="#{relatorioDeVendasBean.eventosPesquisados}" columns="1"
+				rows="5" paginatorAlwaysVisible="false" paginatorPosition="top"
+				paginator="true" emptyMessage="">
+                Eventos: <h:outputText value="#{evento.nome}" />
+                <br />
+				<p:dataGrid var="loja" value="#{evento.lojasVendedoras}" columns="1"
+					rows="5" paginatorAlwaysVisible="false" paginatorPosition="top"
+					paginator="true">
+					Loja: <h:outputText value="#{loja.nome}" />
+					<p:dataGrid var="eventoIngressoTipo"
+						value="#{loja.eventoIngressoTipos}" columns="1" rows="5"
+						paginatorAlwaysVisible="false" paginatorPosition="top"
+						paginator="true">
+						<p:dataTable var="eventoIngresso"
+							value="#{eventoIngressoTipo.eventoIngressos}">
+							<f:facet name="header">
+								<h:outputText
+									value="Evento Ingresso Tipo: #{eventoIngressoTipo.nome}" />
+							</f:facet>
+							<p:column headerText="Evento Ingresso">
+								<h:outputText value="#{eventoIngresso.nome}" />
+							</p:column>
+							<p:column headerText="Quantidade">
+								<h:outputText value="#{eventoIngresso.quantidade}" />
+							</p:column>
+						</p:dataTable>
+					</p:dataGrid>
+				</p:dataGrid>
+				<p:separator />
+				<p:dataTable var="eventoIngressoTipo"
+					value="#{evento.eventoIngressoTipos}">
+					<f:facet name="header">
+						<h:outputText value="Resumo Ingresso Tipo" />
+					</f:facet>
+					<p:column headerText="Evento Ingresso Tipo">
+						<h:outputText value="#{eventoIngressoTipo.nome}" />
+					</p:column>
+					<p:column headerText="Quantidade">
+						<h:outputText value="#{eventoIngressoTipo.quantidade}" />
+					</p:column>
+				</p:dataTable>
+
+				<p:dataTable var="eventoIngresso" value="#{evento.eventoIngressos}">
+					<f:facet name="header">
+						<h:outputText value="Resumo Evento Ingresso" />
+					</f:facet>
+					<p:column headerText="Evento Ingresso">
+						<h:outputText value="#{eventoIngresso.nome}" />
+					</p:column>
+					<p:column headerText="Quantidade">
+						<h:outputText value="#{eventoIngresso.quantidade}" />
+					</p:column>
+				</p:dataTable>
+			</p:dataGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

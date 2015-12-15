@@ -1,0 +1,27 @@
+body{
+    margin: 0px 0px 0px 0px;
+}
+
+h1{
+    color: #ffffff;
+    text-align: right;
+    margin-right: 25px;
+    
+}
+        
+header{
+    background: black;
+    border-top-color: darkorange;
+   
+}
+
+footer{
+    background-color: black;
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    color: #ce5c00;
+}
+
+}
